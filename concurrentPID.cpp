@@ -41,8 +41,7 @@ void PID::calculate() {
     integral += proportional * dt;
 
     float output = kp * proportional + kd * derivative + ki * integral;
-
-    outputFunction(output);
+     outputFunction(output);
 
     prevT = currentTime;
     previousProportional = proportional;
@@ -126,26 +125,38 @@ void ConcurrentPID::setGoal(int PIDnum, float goal) {
     }
 }
 
+void ConcurrentPID:: setPIDdelay(float time){
+  delayConst = time;
+}
+
 void ConcurrentPID::start() {
     while (true) {
         bool allDone = true;
 
-        for (int i = 0; i < numPIDs; i++) {
-            PIDmatrix[i]->calculate();
-
-            if (!PIDmatrix[i]->goalReachedForT()) {
-                allDone = false;
-            }
-        }
+        calculate(allDone);
 
         if (allDone) {
             break;  // Exit if all PIDs are within tolerance
         }
 
-        delay(10);  // Small delay to avoid maxing out CPU
+        delay(delayConst);  // Small delay to avoid maxing out CPU
     }
 }
 
+void ConcurrentPID::calculate(bool &allDone) {
+    for (int i = 0; i < numPIDs; i++) {
+        PIDmatrix[i]->calculate();
+
+        if (!PIDmatrix[i]->goalReachedForT()) {
+            allDone = false;
+        }
+    }
+}
+void ConcurrentPID::calculate() {
+    for (int i = 0; i < numPIDs; i++) {
+        PIDmatrix[i]->calculate();
+    }
+}
 
 
 

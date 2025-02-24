@@ -11,6 +11,7 @@
 class PID {
 public:
     
+    // setter functions
     void setPIDvalues(float kp, float ki, float kd);  //set PID values
     void setTolerance(float tolerance); //set accepted tolarance for error
     void setTimeRequired(long time); //set time that pid controller needs to stay below tolarance in order for it to be completed
@@ -21,17 +22,19 @@ public:
     virtual void outputFunction(float output) { *this->output = output; }
 
     void calculate(); //use pid equation to calculate output (calls input/output functions)
-
     void start(); //start a loop that uses calculate function until the pid controller finishes
-
     bool goalReached(); //check if the error is below tolarance
-
     bool goalReachedForT(); //check if the error is below tolarance for the required time
 
-    float kp, ki, kd; //PID constants
-    
+    // getter functions
+    float getGoal() { return goal; }
+    float getP() { return kp; }
+    float getD() { return kd; }
+    float getI() { return ki; }
+    float getTolerance() { return tolerance; }
 
-protected:
+private:
+    float kp, ki, kd; //PID constants
     float tolerance = 0.0f;
     float goal = 0.0f;
     float* input = nullptr;
@@ -53,17 +56,20 @@ public:
     void setTolerance(float tolarance);
     void setTimeRequired(long time);
     void setGoal(float goal);
-
+    void calculate(bool &allDone);
+    void calculate();
     void setPIDvalues(int pidNumber, float kp, float ki, float kd);  //for single object
     void setTolerance(int pidNumber, float tolarance);
     void setTimeRequired(int pidNumber, long time);
     void setGoal(int pidNumber, float goal);
+    void setPIDdelay(float time);   //set delay to prevent CPU overload (default delayConst = 10 ms)
 
     void start(); //start a loop that enables all pid controllers concurrently
 
 private:
     PID** PIDmatrix = nullptr;  // Array of pointers to PID objects
     int numPIDs;
+    float delayConst = 10;
 };
 
 #endif // CONCURRENTPID_H
