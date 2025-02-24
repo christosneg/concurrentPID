@@ -6,13 +6,6 @@ This library provides an automated PID (Proportional-Integral-Derivative) contro
 - `PID`: A standard PID controller for single-input single-output (SISO) control.
 - `ConcurrentPID`: A concurrent PID controller that enables multiple PID instances to run simultaneously.
 
-## Features
-- Customizable PID parameters (`Kp`, `Ki`, `Kd`)
-- Adjustable tolerance for error
-- Configurable goal and required time for goal stabilization
-- Overridable input and output functions
-- Support for concurrent PID execution
-
 ---
 
 ## `PID` Class
@@ -48,19 +41,6 @@ Checks if the current error is within the specified tolerance.
 
 ### `bool goalReachedForT()`
 Checks if the error has remained within tolerance for the required duration.
-
-### Attributes
-- `float kp, ki, kd`: PID gain values
-- `float tolerance`: Acceptable error margin
-- `float goal`: Target value for the PID
-- `float* input`: Pointer to input variable
-- `float* output`: Pointer to output variable
-- `unsigned long timeRequired`: Time required for goal stability
-- `unsigned long timeBelowTolerance`: Time spent within tolerance
-- `unsigned long startTime`: Timestamp of PID start
-- `unsigned long prevT`: Previous timestamp for calculations
-- `float previousProportional`: Previous proportional error
-- `float integral`: Accumulated integral error
 
 ---
 
@@ -103,18 +83,74 @@ Sets the goal for a specific PID controller.
 ### `void start()`
 Starts a loop that enables all PID controllers to run concurrently.
 
-### Attributes
-- `PID** PIDmatrix`: Array of pointers to `PID` objects
-- `int numPIDs`: Number of PID controllers in the system
-- 
+
 ---
 
-## Notes
-- The `start()` function blocks execution, so input and output functions must be overridden to prevent program halt.
-- Ensure correct initialization of PID objects before using them in `ConcurrentPID`.
+# How to Use
+
+## 1. Create a Custom PID Controller
+Create a new controller class for each unique controller inheriting from the PID class and override input and output
+
+```cpp
+class Controller : public PID {
+public:
+    float inputFunction() override {
+        return *input;  // Read the current speed from a sensor
+    }
+
+    void outputFunction(float outputVal) override {
+        *output = outputVal;  // Send the computed output to the motor
+    }
+};
+```
+## 2. Create instances of objects
+create objects for each PID controller you need to use
+
+```cpp
+Controller myController1;
+Controller myController2;
+Controller myController3;
+```
+## 3. Create instance of concurrentPID class
+create object of the concurrentPID class and give it an array of pointers to each of your controllers
+
+```cpp
+PID* array[] = {&myController1, &myController2, &myController3};
+concurrentPID multiController(array, 3);
+```
+
+
+## 4. Set variables to controllers
+set variables to each of your controllers or the concurrentPID object
+
+```cpp
+multiController.setPIDvalues(10, 0.1, 1);
+
+myController1.setPIDvalues(1.0, 0.01, 0.1);
+myController1.setGoal(0);
+myController1.setTolerance(1.0, 0.01, 0.1);
+
+// Set the time required 
+multiController.setTimeRequired(1);
+
+// Set the goal of firct controller to 100
+multiController.setGoal(1 ,100);
+```
+
+## 5. start() or calculate()
+- The calculate function enables the controller to automatically perform the necesary calculations
+- The start() function calls the claculate() function untill the goal is reached for a certain amount of time within a set tolerance
+
+Both of these functions are available for both classes
 
 ## License
 This library is open-source and can be freely used and modified under the MIT License.
 
 ## About
 This library was created at the University of Cyprus Robotics CLab by me as a tool in order to be used in a maze solving robot. I thought it would be interesting if i shared I submited it to the library manager of Arduino IDE.
+
+Creator: Christodoulos Negkoglou
+
+<div align="center">
+  <img src="Picture.jpg" alt="Logo">
+</div>
