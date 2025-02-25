@@ -8,6 +8,12 @@ This library provides an automated PID (Proportional-Integral-Derivative) contro
 
 ---
 
+## `concurrentPID` Library
+In order to use all the following features you need to include the concurrentPID.h header file
+```
+#include <concurrentPID.h>
+```
+
 ## `PID` Class
 
 ### Methods
@@ -149,8 +155,8 @@ This library is open-source and can be freely used and modified under the MIT Li
 ## About
 This library was created at the University of Cyprus Robotics CLab by me as a tool in order to be used in a maze solving robot. I thought it would be interesting if i shared I submited it to the library manager of Arduino IDE.
 
-Creator: Christodoulos Negkoglou
+Creator: Christodoulos Negkoglou, Undergraduate student at University of Cyprus
 
 <div align="center">
-  <img src="Picture.jpg" alt="Logo">
+  <img src="Picture.jpg" alt="Logo" width="250" height="250">
 </div>
