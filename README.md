@@ -136,7 +136,7 @@ multiController.setPIDvalues(10, 0.1, 1);
 
 myController1.setPIDvalues(1.0, 0.01, 0.1);
 myController1.setGoal(0);
-myController1.setTolerance(1.0, 0.01, 0.1);
+myController1.setTolerance(1.0);
 
 // Set the time required 
 multiController.setTimeRequired(1);
@@ -155,7 +155,7 @@ Both of these functions are available for both classes
 This library is open-source and can be freely used and modified under the MIT License.
 
 ## About
-This library was created at the University of Cyprus Robotics CLab by me as a tool in order to be used in a maze solving robot. I thought it would be interesting if i shared I submited it to the library manager of Arduino IDE.
+This library was created at the University of Cyprus Robotics CLab by me as a tool in order to be used in a maze solving robot. I thought it would be interesting if i submited it to the library manager of Arduino IDE.
 
 Creator: Christodoulos Negkoglou, Undergraduate student at University of Cyprus
 
