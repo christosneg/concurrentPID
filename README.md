@@ -5,6 +5,8 @@ This library provides an automated PID (Proportional-Integral-Derivative) contro
 
 - `PID`: A standard PID controller for single-input single-output (SISO) control.
 - `ConcurrentPID`: A concurrent PID controller that enables multiple PID instances to run simultaneously.
+  
+[View example in Tinkercad](https://www.tinkercad.com/things/42Nyd9vsY93-concurrentpidexample/editel?returnTo=https%3A%2F%2Fwww.tinkercad.com%2Fdashboard%2Fcollections%2FeHYtHdpr4I5%2Fcircuits&sharecode=tgiFji90wd5rtdaAnMEoBwM_ws0CAX_CBa4F33cXqYA)
 
 ---
 
